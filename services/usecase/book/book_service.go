@@ -9,7 +9,7 @@ type Service struct {
 	repo Repository
 }
 
-func NewService() UseCase {
+func NewService() Usecase {
 	repo := repository.NewBook()
 	return &Service{
 		repo: repo,
