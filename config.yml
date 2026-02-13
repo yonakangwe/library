@@ -5,9 +5,10 @@ webserver:
   port: 4601 #port
   name: LIBRARY
   domain: 127.0.0.1
-  
+
+
 database:
-  name: nisstauth01 #databasename
+  name: library #databasename
   user: postgres #username
   password: postgres #postgres password
   port: 5432 #postgresql default port

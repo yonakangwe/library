@@ -1,3 +1,5 @@
 {"L":"INFO","T":"2026-02-12T15:22:20+03:00","C":"/Users/kangwe/github/library/webserver/systems/systems.go:17","M":"Initialising clients..."}
 {"L":"INFO","T":"2026-02-12T15:22:46+03:00","C":"/Users/kangwe/github/library/webserver/systems/systems.go:17","M":"Initialising clients..."}
 {"L":"INFO","T":"2026-02-12T15:27:45+03:00","C":"/Users/kangwe/github/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-12T15:49:55+03:00","C":"/Users/kangwe/github/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-12T19:01:57+03:00","C":"/Users/kangwe/github/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
