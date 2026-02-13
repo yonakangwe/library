@@ -105,3 +105,11 @@ func (r *Staff) EncryptPassword() error {
 	r.PasswordHash = "" // clear plain password for security
 	return nil
 }
+
+type StaffFilter struct {
+	Page      int32
+	PageSize  int32
+	SortBy    string
+	SortOrder string
+	Name      string
+}
