@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict PXRzr5uM2eAmuWHyVjFkEngvOeVixKWC7VLoF1F2ZSM1IofB6Rh2YCiAPd9LQj6
+\restrict f6lVthRo5M9nt5Zqia6ESiTk6vYP3Aa6Npet7Q8nedNhAd4fzTOA5XlQtqyylik
 
 -- Dumped from database version 17.5
 -- Dumped by pg_dump version 17.8 (Homebrew)
@@ -64,7 +64,7 @@ CREATE TABLE public.books (
     created_by bigint,
     updated_by bigint,
     deleted_by bigint,
-    CONSTRAINT books_status_check CHECK (((status)::text = ANY ((ARRAY['available'::character varying, 'borrowed'::character varying, 'lost'::character varying])::text[])))
+    CONSTRAINT books_status_check CHECK (((status)::text = ANY (ARRAY[('available'::character varying)::text, ('borrowed'::character varying)::text, ('lost'::character varying)::text])))
 );
 
 
@@ -213,7 +213,7 @@ CREATE TABLE public.fines (
     created_by bigint,
     updated_by bigint,
     deleted_by bigint,
-    CONSTRAINT fines_status_check CHECK (((status)::text = ANY ((ARRAY['unpaid'::character varying, 'paid'::character varying])::text[])))
+    CONSTRAINT fines_status_check CHECK (((status)::text = ANY (ARRAY[('unpaid'::character varying)::text, ('paid'::character varying)::text])))
 );
 
 
@@ -1218,5 +1218,5 @@ CREATE INDEX sessions_user_id_index ON public.sessions USING btree (user_id);
 -- PostgreSQL database dump complete
 --
 
-\unrestrict PXRzr5uM2eAmuWHyVjFkEngvOeVixKWC7VLoF1F2ZSM1IofB6Rh2YCiAPd9LQj6
+\unrestrict f6lVthRo5M9nt5Zqia6ESiTk6vYP3Aa6Npet7Q8nedNhAd4fzTOA5XlQtqyylik
 
