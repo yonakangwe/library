@@ -1,0 +1,14 @@
+{"L":"ERROR","T":"2026-02-12T15:22:20+03:00","C":"/Users/kangwe/github/library/services/database/database.go:21","M":"unable to create a database instance"}
+{"L":"ERROR","T":"2026-02-12T15:22:20+03:00","C":"/Users/kangwe/github/library/services/database/database.go:25","M":"unable to connect to database: failed to connect to `host=127.0.0.1 user=postgres database=nisstiauth01`: server error (FATAL: database \"nisstiauth01\" does not exist (SQLSTATE 3D000))\n"}
+{"L":"ERROR","T":"2026-02-12T15:22:20+03:00","C":"/Users/kangwe/github/library/config/config.go:93","M":"could not find the private key for: auth"}
+{"L":"ERROR","T":"2026-02-12T15:22:46+03:00","C":"/Users/kangwe/github/library/config/config.go:93","M":"could not find the private key for: auth"}
+{"L":"ERROR","T":"2026-02-12T15:25:07+03:00","C":"/Users/kangwe/github/library/webserver/controllers/role_controller.go:72","M":"error binding model id: code=400, message=Syntax error: offset=14, error=invalid character '\\n' in string literal, internal=invalid character '\\n' in string literal"}
+<<<<<<< HEAD
+{"L":"ERROR","T":"2026-02-12T15:49:01+03:00","C":"/Users/dba/Desktop/library/services/database/database.go:21","M":"unable to create a database instance"}
+{"L":"ERROR","T":"2026-02-12T15:49:01+03:00","C":"/Users/dba/Desktop/library/services/database/database.go:25","M":"unable to connect to database: failed to connect to `host=127.0.0.1 user=postgres database=nisstauth01`: failed SASL auth (FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01))\n"}
+{"L":"ERROR","T":"2026-02-12T15:50:17+03:00","C":"/Users/dba/Desktop/library/services/database/database.go:21","M":"unable to create a database instance"}
+{"L":"ERROR","T":"2026-02-12T15:50:17+03:00","C":"/Users/dba/Desktop/library/services/database/database.go:25","M":"unable to connect to database: failed to connect to `host=127.0.0.1 user=postgres database=nisstauth01`: failed SASL auth (FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01))\n"}
+=======
+{"L":"ERROR","T":"2026-02-12T15:50:20+03:00","C":"/home/bellona/Documents/goLang/library/services/database/database.go:21","M":"unable to create a database instance"}
+{"L":"ERROR","T":"2026-02-12T15:50:20+03:00","C":"/home/bellona/Documents/goLang/library/services/database/database.go:25","M":"unable to connect to database: failed to connect to `host=127.0.0.1 user=postgres database=nisstauth01`: dial error (dial tcp 127.0.0.1:5432: connect: connection refused)\n"}
+>>>>>>> abaecf0 (Napush sasa)
