@@ -25,6 +25,7 @@ type Staff struct {
 }
 
 func NewStaff(fullname, email, phone, username, passwordHash string, createdBy int32) (*Staff, error) {
+
 	staff := &Staff{
 		FullName:     fullname,
 		Email:        email,
@@ -102,7 +103,7 @@ func (r *Staff) EncryptPassword() error {
 	}
 
 	r.PasswordHash = string(hashed)
-	r.PasswordHash = "" // clear plain password for security
+
 	return nil
 }
 

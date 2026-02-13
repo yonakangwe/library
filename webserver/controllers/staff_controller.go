@@ -22,7 +22,7 @@ func CreateStaff(c echo.Context) error {
 
 	m.CreatedBy = 1
 	customValidator, _ := c.Echo().Validator.(*validator.CustomValidator)
-	if err := customValidator.ValidateStructPartial(m, "FullName", "Email", "Phone", "Username", "PasswordHash", "Description", "CreatedBy"); err != nil {
+	if err := customValidator.ValidateStructPartial(m, "FullName", "Email", "Phone", "Username", "PasswordHash", "CreatedBy"); err != nil {
 		log.Errorf("error validating Role  model: %v", err)
 		return wrappers.ValidationErrorResponse(c, err)
 	}

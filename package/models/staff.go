@@ -7,11 +7,11 @@ import (
 // Role DataStructure
 type Staff struct {
 	ID           int32     `json:"id" validate:"numeric,required"`
-	FullName     string    `json:"name" validate:"required"`
-	Email        string    `json:"description" validate:"required"`
+	FullName     string    `json:"fullName" validate:"required"`
+	Email        string    `json:"email" validate:"required"`
 	Phone        string    `json:"phone" validate:"required"`
 	Username     string    `json:"username" validate:"required"`
-	PasswordHash string    `json:"password_hash" validate:"required"`
+	PasswordHash string    `json:"passwordHash" validate:"required"`
 	CreatedBy    int32     `json:"created_by" validate:"numeric,required"`
 	UpdatedBy    int32     `json:"updated_by" validate:"numeric,required"`
 	DeletedBy    int32     `json:"deleted_by" validate:"numeric,required"`
