@@ -22,12 +22,12 @@ func ApiRouters(app *echo.Echo) {
 	*/
 	role := api.Group("/role")
 	{
+		role.POST("/list", controllers.ListRole)
+		role.POST("/show", controllers.GetRole)
 		role.POST("/create", controllers.CreateRole)
-		// role.POST("/list", controllers.ListRole)
-		// role.POST("/show", controllers.GetRole)
-		// role.POST("/update", controllers.UpdateRole)
-		// role.POST("/delete", controllers.SoftDeleteRole)
-		// role.POST("/destroy", controllers.DestroyRole)
+		role.POST("/update", controllers.UpdateRole)
+		role.POST("/delete", controllers.SoftDeleteRole)
+		role.POST("/destroy", controllers.DestroyRole)
 	}
 
 	/*

@@ -19,5 +19,5 @@ type Role struct {
 
 type RoleFilter struct {
 	Filter
-	name int32 `json:"name"`
+	Name int32 `json:"name"`
 }

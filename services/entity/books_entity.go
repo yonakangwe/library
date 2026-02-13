@@ -22,11 +22,11 @@ type Book struct {
 
 func NewBook(title, author, isbn, status string, createdBy int32) (*Book, error) {
 	book := &Book{
-		Title:     title,     // Initialization of Title field
-		Author:    author,    // Initialization of Author field
-		Isbn:      isbn,      // Initialization of Isbn field
-		Status:    status,    // Initialization of Status field
-		CreatedBy: createdBy, // Initialization of CreatedBy field
+		Title:     title,
+		Author:    author,
+		Isbn:      isbn,
+		Status:    status,
+		CreatedBy: createdBy,
 	}
 	err := book.ValidateCreate()
 	if err != nil {
