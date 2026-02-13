@@ -1,60 +1,18 @@
 package mkoa
 
 import (
-	"context"
-
 	"library/package/log"
-	"library/services/database"
 	"library/services/entity"
+	"library/services/repository"
 )
-
-// mkoaRepoAdapter adapts database.MkoaRepository to the usecase Repository interface
-type mkoaRepoAdapter struct {
-	*database.MkoaRepository
-}
-
-func (a *mkoaRepoAdapter) Create(e *entity.Mkoa) (int32, error) {
-	err := a.Insert(context.Background(), e)
-	return int32(e.ID), err
-}
-
-func (a *mkoaRepoAdapter) Get(id int32) (*entity.Mkoa, error) {
-	return a.GetByID(context.Background(), int64(id))
-}
-
-func (a *mkoaRepoAdapter) List(filter *entity.MkoaFilter) ([]*entity.Mkoa, int32, error) {
-	return a.MkoaRepository.List(context.Background(), filter)
-}
-
-func (a *mkoaRepoAdapter) Update(e *entity.Mkoa) error {
-	return a.MkoaRepository.Update(context.Background(), e)
-}
-
-func (a *mkoaRepoAdapter) SoftDelete(id, deletedBy int32) error {
-	m, err := a.GetByID(context.Background(), int64(id))
-	if err != nil {
-		return err
-	}
-	m.DeletedBy = int64(deletedBy)
-	return a.MkoaRepository.SoftDelete(context.Background(), m)
-}
-
-func (a *mkoaRepoAdapter) HardDelete(id int32) error {
-	return a.MkoaRepository.HardDelete(context.Background(), int64(id))
-}
 
 type Service struct {
 	repo Repository
 }
 
 func NewService() UseCase {
-	db, err := database.Connect()
-	if err != nil {
-		log.Errorf("mkoa service: db connect failed: %v", err)
-		panic(err)
-	}
-	repo := database.NewMkoaRepository(db)
-	return NewUsecase(&mkoaRepoAdapter{MkoaRepository: repo})
+	repo := repository.NewMkoa()
+	return NewUsecase(repo)
 }
 
 func NewUsecase(repo Repository) UseCase {
