@@ -1,14 +1,55 @@
 #!/bin/bash
 
 # ==========================================
-# PostgreSQL Restore Script
+# PostgreSQL Restore Script (Auto-Detect v17)
 # Reads ONLY database section from config.yml
 # ==========================================
 
 CONFIG_FILE="../config.yml"
 SQL_FILE="library.sql"
-PG_BIN="/opt/homebrew/opt/postgresql@17/bin"
 DB_HOST="127.0.0.1"
+
+echo "-----------------------------------"
+echo "PostgreSQL Restore Script"
+echo "-----------------------------------"
+
+# ==============================
+# Check required files
+# ==============================
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: config.yml not found!"
+    exit 1
+fi
+
+if [ ! -f "$SQL_FILE" ]; then
+    echo "Error: $SQL_FILE not found!"
+    exit 1
+fi
+
+# ==============================
+# Auto-detect PostgreSQL 17
+# ==============================
+
+if brew list postgresql@17 &>/dev/null; then
+    PG_BIN="$(brew --prefix postgresql@17)/bin"
+elif command -v psql &>/dev/null; then
+    PG_BIN="$(dirname $(command -v psql))"
+else
+    echo "Error: PostgreSQL client not found."
+    exit 1
+fi
+
+PG_VERSION=$($PG_BIN/psql --version | awk '{print $3}' | cut -d. -f1)
+
+if [ "$PG_VERSION" != "17" ]; then
+    echo "Error: PostgreSQL 17 required. Found version $PG_VERSION"
+    exit 1
+fi
+
+echo "Using PostgreSQL binaries from: $PG_BIN"
+echo "Detected version: $PG_VERSION"
+echo "-----------------------------------"
 
 # ==============================
 # Extract database section safely
@@ -59,6 +100,12 @@ fi
 echo "Creating database..."
 $PG_BIN/createdb -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME
 
+if [ $? -ne 0 ]; then
+    echo "Failed to create database!"
+    unset PGPASSWORD
+    exit 1
+fi
+
 # ==============================
 # Restore SQL file
 # ==============================
@@ -67,10 +114,11 @@ echo "Restoring $SQL_FILE ..."
 $PG_BIN/psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME -f $SQL_FILE
 
 if [ $? -eq 0 ]; then
-    echo " Database restored successfully!"
+    echo "Database restored successfully!"
 else
-    echo " Restore failed!"
+    echo "Restore failed!"
 fi
 
 unset PGPASSWORD
+echo "-----------------------------------"
 

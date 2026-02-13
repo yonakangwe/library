@@ -1,16 +1,6 @@
 [
   {
     "method": "POST",
-    "path": "/library/api/v1/role/show",
-    "name": "library/webserver/controllers.GetRole"
-  },
-  {
-    "method": "POST",
-    "path": "/library/api/v1/role/create",
-    "name": "library/webserver/controllers.CreateRole"
-  },
-  {
-    "method": "POST",
     "path": "/library/api/v1/role/update",
     "name": "library/webserver/controllers.UpdateRole"
   },
@@ -28,5 +18,15 @@
     "method": "POST",
     "path": "/library/api/v1/role/list",
     "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/show",
+    "name": "library/webserver/controllers.GetRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/create",
+    "name": "library/webserver/controllers.CreateRole"
   }
 ]
