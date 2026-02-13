@@ -28,7 +28,7 @@ func NewBook() *BookConn {
 	}
 }
 
-var tableName string = "books"
+var bookTableName string = "books"
 
 func getBookQuery() string {
 	return `SELECT 
@@ -43,18 +43,18 @@ func getBookQuery() string {
 					 updated_at, 
 					 deleted_by, 
 					 deleted_at 
-				 FROM ` + tableName
+				 FROM ` + bookTableName
 }
 
 func (con *BookConn) Create(e *entity.Book) (int32, error) {
 	var BookID int32
-	query := `INSERT INTO ` + tableName + ` (title, author, isbn, status, created_by, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	query := `INSERT INTO ` + bookTableName + ` (title, author, isbn, status, created_by, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 	err := con.conn.QueryRow(context.Background(), query, e.Title, e.Author, e.Isbn, e.Status, e.CreatedBy, time.Now()).Scan(&BookID)
 	if util.IsError(err) {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
 			return BookID, nil
 		}
-		log.Errorf("error creating book from table %v: %v", tableName, err)
+		log.Errorf("error creating book from table %v: %v", bookTableName, err)
 	}
 	return BookID, err
 }
