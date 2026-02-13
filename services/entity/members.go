@@ -22,7 +22,7 @@ type Members struct {
 
 func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*Members, error) {
 	members := &Members{
-		FullName:     FullName,
+		FullName:     fullName,
 		Phone:        phone,
 		Email:        email,
 		MembershipNo: membershipNo,
