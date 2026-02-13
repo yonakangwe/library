@@ -30,4 +30,19 @@ func ApiRouters(app *echo.Echo) {
 		// role.POST("/destroy", controllers.DestroyRole)
 	}
 
+	/*
+		|--------------------------------------------------------------------------
+		| DONE - mkoa
+		|--------------------------------------------------------------------------
+	*/
+	mkoa := api.Group("/mkoa")
+	{
+		mkoa.POST("/create", controllers.CreateMkoa)
+		mkoa.POST("/list", controllers.ListMkoa)
+		mkoa.POST("/show", controllers.GetMkoa)
+		mkoa.POST("/update", controllers.UpdateMkoa)
+		mkoa.POST("/delete", controllers.SoftDeleteMkoa)
+		mkoa.POST("/destroy", controllers.DestroyMkoa)
+	}
+
 }

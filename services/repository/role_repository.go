@@ -28,7 +28,7 @@ func NewRole() *RoleConn {
 	}
 }
 
-var tableName string = "roles"
+var roleTableName string = "roles"
 
 func getRoleQuery() string {
 	return `SELECT 
@@ -41,18 +41,18 @@ func getRoleQuery() string {
 					 updated_at, 
 					 deleted_by, 
 					 deleted_at 
-				 FROM ` + tableName
+				 FROM ` + roleTableName
 }
 
 func (con *RoleConn) Create(e *entity.Role) (int32, error) {
 	var RoleID int32
-	query := `INSERT INTO ` + tableName + ` (name, description, created_by, created_at) VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO ` + roleTableName + ` (name, description, created_by, created_at) VALUES ($1, $2, $3, $4) RETURNING id`
 	err := con.conn.QueryRow(context.Background(), query, e.Name, e.Description, e.CreatedBy, time.Now()).Scan(&RoleID)
 	if util.IsError(err) {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
 			return RoleID, nil
 		}
-		log.Errorf("error creating role from table %v: %v", tableName, err)
+		log.Errorf("error creating role from table %v: %v", roleTableName, err)
 	}
 	return RoleID, err
 }
