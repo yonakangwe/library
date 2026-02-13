@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Members struct {
+type Member struct {
 	ID           int32
 	FullName     string
 	Phone        string
@@ -20,8 +20,8 @@ type Members struct {
 	DeletedAt    time.Time
 }
 
-func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*Members, error) {
-	members := &Members{
+func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*Member, error) {
+	member := &Member{
 		FullName:     fullName,
 		Phone:        phone,
 		Email:        email,
@@ -29,12 +29,12 @@ func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*M
 		CreatedBy:    createdBy,
 	}
 
-	err := members.ValidateCreate()
+	err := member.ValidateCreate()
 	if err != nil {
 		log.Errorf("error validating Member entity %v", err)
 		return nil, err
 	}
-	return members, nil
+	return member, nil
 }
 
 func (r *Member) ValidateCreate() error {
@@ -46,9 +46,6 @@ func (r *Member) ValidateCreate() error {
 	}
 	if r.Email == "" {
 		return errors.New("error validating Members entity, Phone field required")
-	}
-	if r.MembershipNo == "" {
-		return errors.New("error validating Members entity, MembershipNo field required")
 	}
 	if r.CreatedBy <= 0 {
 		return errors.New("error validating Members entity, created_by field required")
