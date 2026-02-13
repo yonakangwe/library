@@ -4,6 +4,8 @@ import (
 	"errors"
 	"library/package/log"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Staff struct {
@@ -30,6 +32,12 @@ func NewStaff(fullname, email, phone, username, passwordHash string, createdBy i
 		Username:     username,
 		PasswordHash: passwordHash,
 		CreatedBy:    createdBy,
+	}
+
+	// Hashing password
+	if err := staff.EncryptPassword(); err != nil {
+		log.Errorf("error encrypting password %v", err)
+		return nil, err
 	}
 	err := staff.ValidateCreate()
 	if err != nil {
@@ -80,5 +88,20 @@ func (r *Staff) ValidateUpdate() error {
 	if r.UpdatedBy <= 0 {
 		return errors.New("error validating Staff entity, updated_by field required")
 	}
+	return nil
+}
+
+func (r *Staff) EncryptPassword() error {
+	if r.PasswordHash == "" {
+		return errors.New("password is required")
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(r.PasswordHash), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	r.PasswordHash = string(hashed)
+	r.PasswordHash = "" // clear plain password for security
 	return nil
 }
