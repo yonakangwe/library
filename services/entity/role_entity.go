@@ -46,8 +46,8 @@ func (r *Role) ValidateCreate() error {
 }
 
 func (r *Role) ValidateUpdate() error {
-	if r.ID  <= 0 {
-		return errors.New("error validating Role entity, id field required")
+	if r.ID <= 0 {
+		return errors.New("error validating Role entity, ID field required")
 	}
 	if r.Name == "" {
 		return errors.New("error validating Role entity, name field required")

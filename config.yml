@@ -5,8 +5,7 @@ webserver:
   port: 4601 #port
   name: libraries
   domain: 127.0.0.1
-
-
+  
 database:
   name: library #databasename
   user: root #username
