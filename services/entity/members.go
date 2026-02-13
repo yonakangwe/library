@@ -22,7 +22,7 @@ type Members struct {
 
 func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*Members, error) {
 	members := &Members{
-		FullName:     FullName,
+		FullName:     fullName,
 		Phone:        phone,
 		Email:        email,
 		MembershipNo: membershipNo,
@@ -34,7 +34,7 @@ func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*M
 		log.Errorf("error validating Member entity %v", err)
 		return nil, err
 	}
-	return role, nil
+	return members, nil
 }
 
 func (r *Member) ValidateCreate() error {
