@@ -1,11 +1,13 @@
 package config
 
 import (
-	"library/package/log"
-	"library/package/util"
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+
+	"library/package/log"
+	"library/package/util"
 
 	"github.com/spf13/viper"
 )
@@ -60,9 +62,21 @@ func New() (*Config, error) {
 		log.Error("error getting a working directory:%v", err)
 		return nil, err
 	}
-	configPath := fmt.Sprintf("%s/%s", confPath, configFile)
 
+	// Try current dir, then parent dirs (for tests running from subdirs like services/)
+	configPath := filepath.Join(confPath, configFile)
+	for dir := confPath; dir != ""; dir = filepath.Dir(dir) {
+		candidate := filepath.Join(dir, configFile)
+		if _, err := os.Stat(candidate); err == nil {
+			configPath = candidate
+			break
+		}
+		if filepath.Dir(dir) == dir {
+			break
+		}
+	}
 	viper.SetConfigFile(configPath)
+
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
