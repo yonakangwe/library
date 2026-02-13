@@ -1,0 +1,59 @@
+<<<<<<< HEAD
+=======
+[
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/destroy",
+    "name": "library/webserver/controllers.DestroyRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/show",
+    "name": "library/webserver/controllers.GetRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/create",
+    "name": "library/webserver/controllers.CreateRole"
+  },
+  {
+    "method": "POST",
+>>>>>>> abaecf0 (Napush sasa)
+    "path": "/library/api/v1/role/update",
+    "name": "library/webserver/controllers.UpdateRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/delete",
+    "name": "library/webserver/controllers.SoftDeleteRole"
+<<<<<<< HEAD
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/destroy",
+    "name": "library/webserver/controllers.DestroyRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/show",
+    "name": "library/webserver/controllers.GetRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/create",
+    "name": "library/webserver/controllers.CreateRole"
+=======
+>>>>>>> abaecf0 (Napush sasa)
+  }
+]
+>>>>>>> 45a7c83cad30d426758cf919e54c4b834830e4d3
