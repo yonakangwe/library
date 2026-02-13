@@ -1,11 +1,3 @@
-/**
- * @author Yohana Kangwe
- * @email yonakangwe@gmail.com
- * @create date 2025-01-05 13:13:37
- * @modify date 2025-01-05 13:13:37
- * @desc [description]
- */
-
 package entity
 
 import (

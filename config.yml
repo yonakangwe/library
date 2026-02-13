@@ -3,14 +3,14 @@ webserver:
   publichost: 127.0.0.1 #localhost ip address
   url: http://127.0.0.1 #server ip address
   port: 4601 #port
-  name: LIBRARY
+  name: libraries
   domain: 127.0.0.1
 
 
 database:
   name: library #databasename
   user: postgres #username
-  password: postgres #postgres password
+  password: maconfidence #postgres password
   port: 5432 #postgresql default port
 
 secret:
