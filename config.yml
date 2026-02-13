@@ -9,8 +9,8 @@ webserver:
 
 database:
   name: library #databasename
-  user: postgres #username
-  password: maconfidence #postgres password
+  user: root #username
+  password: Emmanuel@100 #postgres password
   port: 5432 #postgresql default port
 
 secret:

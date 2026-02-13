@@ -61,7 +61,7 @@ DB_PASS=$(awk '/^database:/ {flag=1; next} /^[^ ]/ {flag=0} flag && /password:/ 
 DB_PORT=$(awk '/^database:/ {flag=1; next} /^[^ ]/ {flag=0} flag && /port:/ {print $2}' $CONFIG_FILE)
 
 DB_NAME="library"
-DB_USER="postgres"
+DB_USER="root"
 DB_PORT="5432"
 
 echo "Database: $DB_NAME"
