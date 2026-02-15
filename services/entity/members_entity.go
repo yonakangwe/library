@@ -47,6 +47,9 @@ func (r *Member) ValidateCreate() error {
 	if r.Email == "" {
 		return errors.New("error validating Members entity, Phone field required")
 	}
+	if r.MembershipNo <= 0 {
+		return errors.New("error validating Members entity, MembershipNo field required")
+	}
 	if r.CreatedBy <= 0 {
 		return errors.New("error validating Members entity, created_by field required")
 	}
