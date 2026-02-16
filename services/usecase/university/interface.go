@@ -10,6 +10,6 @@ type UniversityInterface interface {
 	Writer
 }
 
-func UseCase() interface {
+type UseCase interface {
 	CreateUniversity (entity *entity.University) (int32, error)
 }

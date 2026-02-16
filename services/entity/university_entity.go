@@ -1,48 +1,51 @@
 package entity
 
 import (
-	"time"
 	"errors"
+	"net/mail"
+	"strings"
+	"time"
 )
 
 type University struct {
-	ID				int32
-	Name			string
-	Abbreviation	string
-	Email			string
-	Website			string
-	EstablishedYear	int16
-	IsActive		bool
-	CreatedAt		time.Time
-	UpdatedAt		time.Time
-	DeletedAt		time.Time
-	CreatedBy		int32
-	UpdatedBy		int32
-	DeletedBy		int32
+	ID              int32
+	Name            string
+	Abbreviation    string
+	Email           string
+	Website         string
+	EstablishedYear int16
+	IsActive        bool
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	DeletedAt       time.Time
+	CreatedBy       int32
+	UpdatedBy       int32
+	DeletedBy       int32
 }
 
-func UniversityAction(name, abbreviation, email, website, operation string, establishedYear int16, createdBy int32, updatedBy int32, deletedBy int32) (*University, error) {
-	university := &University{
-		Name: name,
-		Abbreviation: abbreviation,
-		Email: email,
-		Website: website,
-		EstablishedYear: establishedYear,
-		IsActive: true,
+func UniversityAction(university *University, operation string) (*University, error) {
+	university = &University{
+		ID:              university.ID,
+		Name:            university.Name,
+		Abbreviation:    university.Abbreviation,
+		Email:           university.Email,
+		Website:         university.Website,
+		EstablishedYear: university.EstablishedYear,
+		IsActive:        university.IsActive,
+		CreatedBy:       university.CreatedBy,
+		UpdatedBy:       university.UpdatedBy,
+		DeletedBy:       university.DeletedBy,
 	}
 
 	if operation == "create" {
 		university.CreatedAt = time.Now()
-		university.CreatedBy = createdBy
 	}
 
 	if operation == "update" {
-		university.UpdatedBy = updatedBy
 		university.UpdatedAt = time.Now()
 	}
 
 	if operation == "delete" {
-		university.DeletedBy = deletedBy
 		university.DeletedAt = time.Now()
 	}
 
@@ -57,7 +60,7 @@ func UniversityAction(name, abbreviation, email, website, operation string, esta
 	}
 
 	// Return the university entity
-	return university, nil;
+	return university, nil
 }
 
 func (university *University) ValidateFields(operation string) error {
@@ -71,6 +74,11 @@ func (university *University) ValidateFields(operation string) error {
 
 	if university.Email == "" {
 		return errors.New("Email is required")
+	}
+
+	// Validate email format
+	if _, err := mail.ParseAddress(university.Email); err != nil {
+		return errors.New("Invalid email format")
 	}
 
 	if university.Website == "" {
@@ -93,14 +101,21 @@ func (university *University) ValidateFields(operation string) error {
 		return errors.New("Deleted by is required")
 	}
 
-	return nil;
+	return nil
 }
 
 func (university *University) generateAbbreviation() string {
 	if university.Name == "" {
 		return ""
 	}
-	return university.Name[:4]
+	words := strings.Fields(university.Name)
+	abbr := ""
+	for _, word := range words {
+		if len(word) > 0 {
+			abbr += string(word[0])
+		}
+	}
+	return strings.ToUpper(abbr)
 }
 
 type UniversityFilter struct {

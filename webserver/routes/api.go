@@ -38,4 +38,13 @@ func ApiRouters(app *echo.Echo) {
 		staff.GET("/show/:id", controllers.GetStaff)
 	}
 
+	/*
+		|--------------------------------------------------------------------------
+		|  University
+		|--------------------------------------------------------------------------
+	*/
+	university := api.Group("/university")
+	{
+		university.POST("/create", controllers.CreateUniversity)
+	}
 }
