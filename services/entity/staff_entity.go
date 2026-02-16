@@ -18,10 +18,10 @@ type Staff struct {
 	IsActive     bool
 	CreatedBy    int32
 	CreatedAt    time.Time
-	UpdatedBy    int32
-	UpdatedAt    time.Time
-	DeletedBy    int32
-	DeletedAt    time.Time
+	UpdatedBy    *int32     //
+	UpdatedAt    *time.Time //
+	DeletedBy    *int32     //
+	DeletedAt    *time.Time //
 }
 
 func NewStaff(fullname, email, phone, username, passwordHash string, createdBy int32) (*Staff, error) {
@@ -86,7 +86,7 @@ func (r *Staff) ValidateUpdate() error {
 	if r.PasswordHash == "" {
 		return errors.New("error validating Staff entity, password_hash field required")
 	}
-	if r.UpdatedBy <= 0 {
+	if r.UpdatedBy == nil || *r.UpdatedBy <= 0 {
 		return errors.New("error validating Staff entity, updated_by field required")
 	}
 	return nil

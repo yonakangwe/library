@@ -30,4 +30,9 @@ func ApiRouters(app *echo.Echo) {
 		role.POST("/destroy", controllers.DestroyRole)
 	}
 
+	member := api.Group("/member")
+	{
+		member.POST("/create", controllers.CreateMember)
+	}
+
 }
