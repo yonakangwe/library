@@ -1,18 +1,18 @@
 [
   {
     "method": "POST",
-    "path": "/library/api/v1/role/create",
-    "name": "library/webserver/controllers.CreateRole"
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/show",
+    "name": "library/webserver/controllers.GetRole"
   },
   {
     "method": "POST",
     "path": "/library/api/v1/role/update",
     "name": "library/webserver/controllers.UpdateRole"
-  },
-  {
-    "method": "POST",
-    "path": "/library/api/v1/role/delete",
-    "name": "library/webserver/controllers.SoftDeleteRole"
   },
   {
     "method": "POST",
@@ -23,6 +23,11 @@
     "method": "POST",
     "path": "/library/api/v1/member/create",
     "name": "library/webserver/controllers.CreateMember"
+  },
+  {
+    "method": "GET",
+    "path": "/library/api/v1/staff/show/:id",
+    "name": "library/webserver/controllers.GetStaff"
   },
   {
     "method": "POST",
