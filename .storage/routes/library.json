@@ -1,6 +1,11 @@
 [
   {
     "method": "POST",
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
     "path": "/library/api/v1/role/show",
     "name": "library/webserver/controllers.GetRole"
   },
@@ -23,15 +28,5 @@
     "method": "POST",
     "path": "/library/api/v1/role/destroy",
     "name": "library/webserver/controllers.DestroyRole"
-  },
-  {
-    "method": "POST",
-    "path": "/library/api/v1/staff/create",
-    "name": "library/webserver/controllers.CreateStaff"
-  },
-  {
-    "method": "POST",
-    "path": "/library/api/v1/role/list",
-    "name": "library/webserver/controllers.ListRole"
   }
 ]

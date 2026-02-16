@@ -33,7 +33,7 @@ func NewRole() *RoleConn {
 
 var roleTableName string = "roles"
 
-func getRoleQuery() string {
+func getRoleQuerie() string {
 	return `SELECT 
 					 id,
 					 name, 
@@ -71,12 +71,12 @@ func (con *RoleConn) List(filter *entity.RoleFilter) ([]*entity.Role, int32, err
 	query := getRoleQuery() + " WHERE deleted_at IS NULL " + joinQuery
 	rows, err := con.conn.Query(context.Background(), query, args...)
 	if util.IsError(err) {
-		log.Errorf("error querying  table %v: %v", tableName, err)
+		log.Errorf("error querying  table %v: %v", roleTableName, err)
 		return nil, totalCount, err
 	}
 	for rows.Next() {
 		if err := rows.Scan(&id, &name, &description, &createdBy, &createdAt, &updatedBy, &updatedAt, &deletedBy, &deletedAt); util.IsError(err) {
-			log.Errorf("error scanning from table %v : %v", tableName, err)
+			log.Errorf("error scanning from table %v : %v", roleTableName, err)
 			return nil, totalCount, err
 		}
 		RoleData := &entity.Role{
@@ -105,7 +105,7 @@ func (con *RoleConn) Get(id int32) (*entity.Role, error) {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
 			return nil, nil
 		}
-		log.Errorf("error getting  table %v: %v", tableName, err)
+		log.Errorf("error getting  table %v: %v", roleTableName, err)
 		return nil, err
 	}
 	Role := &entity.Role{
@@ -123,7 +123,7 @@ func (con *RoleConn) Get(id int32) (*entity.Role, error) {
 }
 
 func (con *RoleConn) Update(e *entity.Role) error {
-	query := `UPDATE ` + tableName + ` SET 
+	query := `UPDATE ` + roleTableName + ` SET 
 										 name = $1, 
 										 description = $2, 
 										 updated_by = $3, 
@@ -131,28 +131,28 @@ func (con *RoleConn) Update(e *entity.Role) error {
 										 WHERE id = $5`
 	_, err := con.conn.Exec(context.Background(), query, e.Name, e.Description, e.UpdatedBy, time.Now(), e.ID)
 	if util.IsError(err) {
-		log.Errorf("error updating  from table %v by id: %v", tableName, err)
+		log.Errorf("error updating  from table %v by id: %v", roleTableName, err)
 	}
 	return err
 }
 
 func (con *RoleConn) SoftDelete(id, deletedBy int32) error {
-	query := `UPDATE ` + tableName + ` SET 
+	query := `UPDATE ` + roleTableName + ` SET 
 									 deleted_by = $1, 
 									 deleted_at = $2
 									 WHERE id = $3`
 	_, err := con.conn.Exec(context.Background(), query, deletedBy, time.Now(), id)
 	if util.IsError(err) {
-		log.Errorf("error soft delete  from table %v by id: %v", tableName, err)
+		log.Errorf("error soft delete  from table %v by id: %v", roleTableName, err)
 	}
 	return err
 }
 
 func (con *RoleConn) HardDelete(id int32) error {
-	query := `DELETE FROM ` + tableName + ` WHERE id = $1`
+	query := `DELETE FROM ` + roleTableName + ` WHERE id = $1`
 	_, err := con.conn.Exec(context.Background(), query, id)
 	if util.IsError(err) {
-		log.Errorf("error hard delete from table %v by id: %v", tableName, err)
+		log.Errorf("error hard delete from table %v by id: %v", roleTableName, err)
 	}
 	return err
 }
@@ -194,13 +194,13 @@ func (con *RoleConn) RolePageFilter(filter *entity.RoleFilter) (string, []any, i
 
 func (con *RoleConn) GetTotalCount(innerQuery string, args []any) int32 {
 	var totalCount int32
-	query := ` SELECT count(*) FROM ` + tableName + ` WHERE deleted_at IS NULL ` + innerQuery
+	query := ` SELECT count(*) FROM ` + roleTableName + ` WHERE deleted_at IS NULL ` + innerQuery
 	err := con.conn.QueryRow(context.Background(), query, args...).Scan(&totalCount)
 	if err != nil {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
 			return 0
 		}
-		log.Errorf("error getting total count from %v : %v", tableName, err)
+		log.Errorf("error getting total count from %v : %v", roleTableName, err)
 	}
 	return totalCount
 }
