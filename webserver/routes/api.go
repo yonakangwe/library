@@ -35,4 +35,19 @@ func ApiRouters(app *echo.Echo) {
 		member.POST("/create", controllers.CreateMember)
 	}
 
+	/*
+		|--------------------------------------------------------------------------
+		| DONE - country
+		|--------------------------------------------------------------------------
+	*/
+	countryRoute := api.Group("/country")
+	{
+		countryRoute.POST("/list", controllers.ListCountry)
+		countryRoute.POST("/show", controllers.GetCountry)
+		countryRoute.POST("/create", controllers.CreateCountry)
+		countryRoute.POST("/update", controllers.UpdateCountry)
+		countryRoute.POST("/delete", controllers.SoftDeleteCountry)
+		countryRoute.POST("/destroy", controllers.DestroyCountry)
+	}
+
 }
