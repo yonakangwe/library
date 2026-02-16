@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"library/package/log"
 	"library/package/models"
 	"library/package/pagination"
@@ -16,11 +17,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	mkoaInternalServerErrorMsg = "unexpected error occurred while processing your request"
+	mkoaDBUnavailableMsg       = "Database unavailable. Please try again later."
+)
+
 func CreateMkoa(c echo.Context) error {
 	m := &models.Mkoa{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	m.CreatedBy = 1
@@ -31,19 +37,28 @@ func CreateMkoa(c echo.Context) error {
 	}
 
 	service := mkoa.NewService()
-	_, err := service.Create(m.Name, m.Code, m.CreatedBy)
+	mkoaID, err := service.Create(m.Name, m.Code, m.CreatedBy)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
+		if errors.Is(err, mkoa.ErrCodeExists) {
+			return wrappers.ErrorResponse(c, http.StatusConflict, "Code already exists. Please use a unique code.")
+		}
 		log.Errorf("error creating new mkoa %v: %v", m.Name, err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
-	return wrappers.MessageResponse(c, http.StatusCreated, m.Name+" created successfully")
+	return wrappers.Response(c, http.StatusCreated, map[string]any{
+		"id":      mkoaID,
+		"message": m.Name + " created successfully",
+	})
 }
 
 func ListMkoa(c echo.Context) error {
 	m := &models.MkoaFilter{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa filter: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	if m.Page == 0 {
@@ -66,8 +81,11 @@ func ListMkoa(c echo.Context) error {
 	service := mkoa.NewService()
 	data, totalCount, err := service.List(filter)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
 		log.Errorf("error listing mkoa: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 	if data == nil {
 		return wrappers.Response(c, http.StatusOK, []*models.Mkoa{})
@@ -88,9 +106,9 @@ func ListMkoa(c echo.Context) error {
 			Name:      d.Name,
 			Code:      d.Code,
 			Status:    d.Status,
-			CreatedBy: int32(d.CreatedBy),
-			UpdatedBy: int32(d.UpdatedBy),
-			DeletedBy: int32(d.DeletedBy),
+			CreatedBy: int32(entity.Int64PtrVal(d.CreatedBy)),
+			UpdatedBy: int32(entity.Int64PtrVal(d.UpdatedBy)),
+			DeletedBy: int32(entity.Int64PtrVal(d.DeletedBy)),
 			CreatedAt: d.CreatedAt,
 			UpdatedAt: updatedAt,
 			DeletedAt: deletedAt,
@@ -105,7 +123,7 @@ func GetMkoa(c echo.Context) error {
 	m := &models.Mkoa{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa model id: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	customValidator, _ := c.Echo().Validator.(*validator.CustomValidator)
@@ -117,12 +135,18 @@ func GetMkoa(c echo.Context) error {
 	service := mkoa.NewService()
 	data, err := service.Get(m.ID)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrNotFound) {
+			return wrappers.ErrorResponse(c, http.StatusNotFound, "mkoa not found")
+		}
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
 		log.Errorf("error getting mkoa %v: %v", m.ID, err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	if data == nil {
-		return wrappers.Response(c, http.StatusOK, nil)
+		return wrappers.ErrorResponse(c, http.StatusNotFound, "mkoa not found")
 	}
 
 	updatedAt := time.Time{}
@@ -138,9 +162,9 @@ func GetMkoa(c echo.Context) error {
 		Name:      data.Name,
 		Code:      data.Code,
 		Status:    data.Status,
-		CreatedBy: int32(data.CreatedBy),
-		UpdatedBy: int32(data.UpdatedBy),
-		DeletedBy: int32(data.DeletedBy),
+		CreatedBy: int32(entity.Int64PtrVal(data.CreatedBy)),
+		UpdatedBy: int32(entity.Int64PtrVal(data.UpdatedBy)),
+		DeletedBy: int32(entity.Int64PtrVal(data.DeletedBy)),
 		CreatedAt: data.CreatedAt,
 		UpdatedAt: updatedAt,
 		DeletedAt: deletedAt,
@@ -152,7 +176,7 @@ func UpdateMkoa(c echo.Context) error {
 	m := &models.Mkoa{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa model: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	m.UpdatedBy = 1
@@ -166,19 +190,29 @@ func UpdateMkoa(c echo.Context) error {
 	if status == "" {
 		status = entity.MkoaStatusActive
 	}
+	ub := int64(m.UpdatedBy)
 	e := &entity.Mkoa{
 		ID:        int64(m.ID),
 		Name:      m.Name,
 		Code:      m.Code,
 		Status:    status,
-		UpdatedBy: int64(m.UpdatedBy),
+		UpdatedBy: &ub,
 	}
 
 	service := mkoa.NewService()
 	_, err := service.Update(e)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrNotFound) {
+			return wrappers.ErrorResponse(c, http.StatusNotFound, "mkoa not found")
+		}
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
+		if errors.Is(err, mkoa.ErrCodeExists) {
+			return wrappers.ErrorResponse(c, http.StatusConflict, "Code already exists. Please use a unique code.")
+		}
 		log.Errorf("error updating mkoa %v: %v", m.Name, err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 	return wrappers.MessageResponse(c, http.StatusAccepted, m.Name+" updated successfully")
 }
@@ -187,7 +221,7 @@ func SoftDeleteMkoa(c echo.Context) error {
 	m := &models.Mkoa{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa model id: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	m.DeletedBy = 1
@@ -200,8 +234,14 @@ func SoftDeleteMkoa(c echo.Context) error {
 	service := mkoa.NewService()
 	err := service.SoftDelete(m.ID, m.DeletedBy)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrNotFound) {
+			return wrappers.ErrorResponse(c, http.StatusNotFound, "mkoa not found")
+		}
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
 		log.Errorf("error deleting mkoa record: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 	return wrappers.MessageResponse(c, http.StatusAccepted, "record deleted successfully")
 }
@@ -210,7 +250,7 @@ func DestroyMkoa(c echo.Context) error {
 	m := &models.Mkoa{}
 	if err := c.Bind(m); util.IsError(err) {
 		log.Errorf("error binding Mkoa model id: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 
 	customValidator, _ := c.Echo().Validator.(*validator.CustomValidator)
@@ -222,8 +262,14 @@ func DestroyMkoa(c echo.Context) error {
 	service := mkoa.NewService()
 	err := service.HardDelete(m.ID)
 	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrNotFound) {
+			return wrappers.ErrorResponse(c, http.StatusNotFound, "mkoa not found")
+		}
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
 		log.Errorf("error destroying mkoa record: %v", err)
-		return wrappers.ErrorResponse(c, http.StatusInternalServerError, internalServerErrorMsg)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 	return wrappers.MessageResponse(c, http.StatusAccepted, "record deleted successfully")
 }

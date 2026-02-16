@@ -1,0 +1,120 @@
+{
+	"info": {
+		"name": "Library - Mkoa API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:4601/library/api/v1"
+		},
+		{
+			"key": "mkoaId",
+			"value": "1"
+		}
+	],
+	"item": [
+		{
+			"name": "Create Mkoa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Dar es Salaam\",\n  \"code\": \"DSM\",\n  \"created_by\": 1\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/create"
+			}
+		},
+		{
+			"name": "List Mkoa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"page\": 1,\n  \"page_size\": 10,\n  \"sort_by\": \"name\",\n  \"sort_order\": \"ASC\",\n  \"name\": \"\",\n  \"code\": \"\",\n  \"status\": \"\"\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/list"
+			}
+		},
+		{
+			"name": "Get Mkoa (by ID)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{mkoaId}}\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/show"
+			}
+		},
+		{
+			"name": "Update Mkoa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{mkoaId}},\n  \"name\": \"Dar es Salaam Updated\",\n  \"code\": \"DSM\",\n  \"status\": \"active\",\n  \"updated_by\": 1\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/update"
+			}
+		},
+		{
+			"name": "Soft Delete Mkoa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{mkoaId}},\n  \"deleted_by\": 1\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/delete"
+			}
+		},
+		{
+			"name": "Hard Delete (Destroy) Mkoa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{mkoaId}}\n}"
+				},
+				"url": "{{baseUrl}}/mkoa/destroy"
+			}
+		}
+	]
+}

@@ -1,10 +1,20 @@
 package mkoa
 
 import (
+	"errors"
 	"library/package/log"
 	"library/services/entity"
 	"library/services/repository"
 )
+
+// ErrNotFound is returned when a mkoa record is not found (e.g. Get by id).
+var ErrNotFound = errors.New("mkoa not found")
+
+// ErrDBUnavailable is returned when the database is not connected (e.g. PostgreSQL not running).
+var ErrDBUnavailable = errors.New("database unavailable")
+
+// ErrCodeExists is returned when creating or updating with a code that already exists.
+var ErrCodeExists = errors.New("code already exists")
 
 type Service struct {
 	repo Repository
@@ -30,6 +40,12 @@ func (s *Service) Create(name string, code string, createdBy int32) (int32, erro
 
 	mkoaID, err := s.repo.Create(mkoa)
 	if err != nil {
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return 0, ErrDBUnavailable
+		}
+		if errors.Is(err, repository.ErrMkoaCodeExists) {
+			return 0, ErrCodeExists
+		}
 		return int32(mkoa.ID), err
 	}
 
@@ -42,6 +58,9 @@ LIST
 func (s *Service) List(filter *entity.MkoaFilter) ([]*entity.Mkoa, int32, error) {
 	mkoaData, totalCount, err := s.repo.List(filter)
 	if err != nil {
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return nil, 0, ErrDBUnavailable
+		}
 		return nil, 0, err
 	}
 
@@ -54,9 +73,14 @@ GET
 func (s *Service) Get(id int32) (*entity.Mkoa, error) {
 	mkoaData, err := s.repo.Get(id)
 	if err != nil {
+		if errors.Is(err, repository.ErrMkoaNotFound) {
+			return nil, ErrNotFound
+		}
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return nil, ErrDBUnavailable
+		}
 		return nil, err
 	}
-
 	return mkoaData, nil
 }
 
@@ -72,9 +96,17 @@ func (s *Service) Update(e *entity.Mkoa) (int32, error) {
 
 	err = s.repo.Update(e)
 	if err != nil {
+		if errors.Is(err, repository.ErrMkoaNotFound) {
+			return 0, ErrNotFound
+		}
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return 0, ErrDBUnavailable
+		}
+		if errors.Is(err, repository.ErrMkoaCodeExists) {
+			return 0, ErrCodeExists
+		}
 		return int32(e.ID), err
 	}
-
 	return int32(e.ID), nil
 }
 
@@ -82,12 +114,32 @@ func (s *Service) Update(e *entity.Mkoa) (int32, error) {
 SOFT DELETE
 */
 func (s *Service) SoftDelete(id, deletedBy int32) error {
-	return s.repo.SoftDelete(id, deletedBy)
+	err := s.repo.SoftDelete(id, deletedBy)
+	if err != nil {
+		if errors.Is(err, repository.ErrMkoaNotFound) {
+			return ErrNotFound
+		}
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return ErrDBUnavailable
+		}
+		return err
+	}
+	return nil
 }
 
 /*
 HARD DELETE
 */
 func (s *Service) HardDelete(id int32) error {
-	return s.repo.HardDelete(id)
+	err := s.repo.HardDelete(id)
+	if err != nil {
+		if errors.Is(err, repository.ErrMkoaNotFound) {
+			return ErrNotFound
+		}
+		if errors.Is(err, repository.ErrDBUnavailable) {
+			return ErrDBUnavailable
+		}
+		return err
+	}
+	return nil
 }
