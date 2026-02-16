@@ -33,7 +33,7 @@ func NewRole() *RoleConn {
 
 var roleTableName string = "roles"
 
-func getRoleQuerie() string {
+func getRoleQuery() string {
 	return `SELECT 
 					 id,
 					 name, 
