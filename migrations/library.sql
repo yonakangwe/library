@@ -305,9 +305,9 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 CREATE TABLE public.members (
     id bigint NOT NULL,
     full_name character varying(150) NOT NULL,
-    phone character varying(15) NOT NULL,
+    phone character varying(15),
     email character varying(150) NOT NULL,
-    membership_no character varying(20) NOT NULL,
+    membership_no character varying(20),
     created_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp(0) without time zone,
     deleted_at timestamp(0) without time zone,

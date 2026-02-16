@@ -24,3 +24,7 @@
 {"L":"INFO","T":"2026-02-13T16:36:16+03:00","C":"/Users/emmanuelmhina/Desktop/MFUMO/GOLANG/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
 {"L":"INFO","T":"2026-02-13T16:46:09+03:00","C":"/Users/emmanuelmhina/Desktop/MFUMO/GOLANG/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
 {"L":"INFO","T":"2026-02-13T16:49:56+03:00","C":"/Users/emmanuelmhina/Desktop/MFUMO/GOLANG/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-16T13:42:18+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-16T13:43:50+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-16T13:47:52+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-16T13:49:13+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}

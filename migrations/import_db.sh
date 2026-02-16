@@ -42,7 +42,7 @@ fi
 
 PG_VERSION=$($PG_BIN/psql --version | awk '{print $3}' | cut -d. -f1)
 
-if [ "$PG_VERSION" != "17" ]; then
+if [ "$PG_VERSION" != "14" ]; then
     echo "Error: PostgreSQL 17 required. Found version $PG_VERSION"
     exit 1
 fi
@@ -61,7 +61,7 @@ DB_PASS=$(awk '/^database:/ {flag=1; next} /^[^ ]/ {flag=0} flag && /password:/ 
 DB_PORT=$(awk '/^database:/ {flag=1; next} /^[^ ]/ {flag=0} flag && /port:/ {print $2}' $CONFIG_FILE)
 
 DB_NAME="library"
-DB_USER="root"
+DB_USER="nakhaju"
 DB_PORT="5432"
 
 echo "Database: $DB_NAME"
