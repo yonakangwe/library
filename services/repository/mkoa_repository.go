@@ -34,6 +34,22 @@ func NewMkoa() *MkoaConn {
 
 var mkoaTableName string = "mikoa"
 
+// ErrMkoaNotFound is returned when a mkoa record is not found (e.g. Get by id).
+var ErrMkoaNotFound = errors.New("mkoa not found")
+
+// ErrDBUnavailable is returned when the database connection is nil (e.g. PostgreSQL not running).
+var ErrDBUnavailable = errors.New("database unavailable")
+
+// ErrMkoaCodeExists is returned when creating or updating with a code that already exists (case-insensitive).
+var ErrMkoaCodeExists = errors.New("mkoa code already exists")
+
+func (con *MkoaConn) checkConn() error {
+	if con == nil || con.conn == nil {
+		return ErrDBUnavailable
+	}
+	return nil
+}
+
 func getMkoaQuery() string {
 	return `SELECT id, name, code, status, created_at, updated_at,
 		deleted_at, created_by, updated_by, deleted_by
@@ -41,28 +57,69 @@ func getMkoaQuery() string {
 }
 
 /*
+GetByCode returns a mkoa by code (case-insensitive), only non-deleted. Used for uniqueness check.
+*/
+func (con *MkoaConn) GetByCode(code string) (*entity.Mkoa, error) {
+	if err := con.checkConn(); err != nil {
+		return nil, err
+	}
+	if code == "" {
+		return nil, ErrMkoaNotFound
+	}
+	query := getMkoaQuery() + ` WHERE deleted_at IS NULL AND LOWER(code) = LOWER($1)`
+	m := new(entity.Mkoa)
+	err := con.conn.QueryRow(context.Background(), query, code).Scan(
+		&m.ID, &m.Name, &m.Code, &m.Status, &m.CreatedAt, &m.UpdatedAt, &m.DeletedAt,
+		&m.CreatedBy, &m.UpdatedBy, &m.DeletedBy,
+	)
+	if util.IsError(err) {
+		if err.Error() == error_message.ErrNoResultSet.Error() {
+			return nil, ErrMkoaNotFound
+		}
+		log.Errorf("error getting mkoa by code from table %v: %v", mkoaTableName, err)
+		return nil, err
+	}
+	return m, nil
+}
+
+/*
 CREATE
 */
 func (con *MkoaConn) Create(e *entity.Mkoa) (int32, error) {
+	if err := con.checkConn(); err != nil {
+		return 0, err
+	}
 	var mkoaID int32
 	if err := e.ValidateCreate(); err != nil {
 		return 0, err
 	}
+	existing, err := con.GetByCode(e.Code)
+	if err != nil && !errors.Is(err, ErrMkoaNotFound) {
+		return 0, err
+	}
+	if existing != nil {
+		return 0, ErrMkoaCodeExists
+	}
 	query := `INSERT INTO ` + mkoaTableName + ` (name, code, status, created_at, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING id`
-	err := con.conn.QueryRow(context.Background(), query, e.Name, e.Code, e.Status, e.CreatedAt, e.CreatedBy).Scan(&mkoaID)
+	err = con.conn.QueryRow(context.Background(), query, e.Name, e.Code, e.Status, e.CreatedAt, entity.Int64PtrVal(e.CreatedBy)).Scan(&mkoaID)
 	if util.IsError(err) {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
 			return mkoaID, nil
 		}
 		log.Errorf("error creating mkoa from table %v: %v", mkoaTableName, err)
+		return 0, err
 	}
-	return mkoaID, err
+	e.ID = int64(mkoaID)
+	return mkoaID, nil
 }
 
 /*
 GET
 */
 func (con *MkoaConn) Get(id int32) (*entity.Mkoa, error) {
+	if err := con.checkConn(); err != nil {
+		return nil, err
+	}
 	query := getMkoaQuery() + ` WHERE deleted_at IS NULL AND id = $1`
 	m := new(entity.Mkoa)
 	err := con.conn.QueryRow(context.Background(), query, id).Scan(
@@ -79,7 +136,7 @@ func (con *MkoaConn) Get(id int32) (*entity.Mkoa, error) {
 	)
 	if util.IsError(err) {
 		if err.Error() == error_message.ErrNoResultSet.Error() {
-			return nil, err
+			return nil, ErrMkoaNotFound
 		}
 		log.Errorf("error getting mkoa from table %v: %v", mkoaTableName, err)
 		return nil, err
@@ -91,6 +148,9 @@ func (con *MkoaConn) Get(id int32) (*entity.Mkoa, error) {
 LIST (with pagination, sort, filter)
 */
 func (con *MkoaConn) List(filter *entity.MkoaFilter) ([]*entity.Mkoa, int32, error) {
+	if err := con.checkConn(); err != nil {
+		return nil, 0, err
+	}
 	joinQuery, args, totalCount := con.mkoaPageFilter(filter)
 	query := getMkoaQuery() + " WHERE deleted_at IS NULL " + joinQuery
 	rows, err := con.conn.Query(context.Background(), query, args...)
@@ -182,6 +242,9 @@ func (con *MkoaConn) mkoaPageFilter(filter *entity.MkoaFilter) (string, []any, i
 }
 
 func (con *MkoaConn) getTotalCount(innerQuery string, args []any) int32 {
+	if con.checkConn() != nil {
+		return 0
+	}
 	var totalCount int32
 	query := `SELECT count(*) FROM ` + mkoaTableName + ` WHERE deleted_at IS NULL ` + innerQuery
 	err := con.conn.QueryRow(context.Background(), query, args...).Scan(&totalCount)
@@ -198,8 +261,18 @@ func (con *MkoaConn) getTotalCount(innerQuery string, args []any) int32 {
 UPDATE
 */
 func (con *MkoaConn) Update(e *entity.Mkoa) error {
+	if err := con.checkConn(); err != nil {
+		return err
+	}
 	if err := e.ValidateUpdate(); err != nil {
 		return err
+	}
+	existing, err := con.GetByCode(e.Code)
+	if err != nil && !errors.Is(err, ErrMkoaNotFound) {
+		return err
+	}
+	if existing != nil && existing.ID != e.ID {
+		return ErrMkoaCodeExists
 	}
 	query := `UPDATE ` + mkoaTableName + ` SET
 		name = $1,
@@ -209,13 +282,13 @@ func (con *MkoaConn) Update(e *entity.Mkoa) error {
 		updated_by = $5
 		WHERE id = $6 AND deleted_at IS NULL`
 	now := time.Now()
-	cmd, err := con.conn.Exec(context.Background(), query, e.Name, e.Code, e.Status, now, e.UpdatedBy, e.ID)
+	cmd, err := con.conn.Exec(context.Background(), query, e.Name, e.Code, e.Status, now, entity.Int64PtrVal(e.UpdatedBy), e.ID)
 	if util.IsError(err) {
 		log.Errorf("error updating from table %v: %v", mkoaTableName, err)
 		return err
 	}
 	if cmd.RowsAffected() == 0 {
-		return errors.New("no record updated")
+		return ErrMkoaNotFound
 	}
 	return nil
 }
@@ -224,11 +297,15 @@ func (con *MkoaConn) Update(e *entity.Mkoa) error {
 SOFT DELETE
 */
 func (con *MkoaConn) SoftDelete(id, deletedBy int32) error {
+	if err := con.checkConn(); err != nil {
+		return err
+	}
 	m, err := con.Get(id)
 	if err != nil {
 		return err
 	}
-	m.DeletedBy = int64(deletedBy)
+	db := int64(deletedBy)
+	m.DeletedBy = &db
 	if err := m.ValidateDelete(); err != nil {
 		return err
 	}
@@ -240,7 +317,7 @@ func (con *MkoaConn) SoftDelete(id, deletedBy int32) error {
 		return err
 	}
 	if cmd.RowsAffected() == 0 {
-		return errors.New("no record deleted")
+		return ErrMkoaNotFound
 	}
 	return nil
 }
@@ -249,6 +326,9 @@ func (con *MkoaConn) SoftDelete(id, deletedBy int32) error {
 HARD DELETE
 */
 func (con *MkoaConn) HardDelete(id int32) error {
+	if err := con.checkConn(); err != nil {
+		return err
+	}
 	query := `DELETE FROM ` + mkoaTableName + ` WHERE id = $1`
 	cmd, err := con.conn.Exec(context.Background(), query, id)
 	if util.IsError(err) {
@@ -256,7 +336,7 @@ func (con *MkoaConn) HardDelete(id int32) error {
 		return err
 	}
 	if cmd.RowsAffected() == 0 {
-		return errors.New("no record deleted")
+		return ErrMkoaNotFound
 	}
 	return nil
 }

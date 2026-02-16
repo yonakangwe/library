@@ -1,7 +1,6 @@
 package crypto
 
 import (
-	"library/package/log"
 	"crypto/ecdsa"
 	"crypto/rand"
 	"crypto/sha256"
@@ -9,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
+	"library/package/log"
 )
 
 /**

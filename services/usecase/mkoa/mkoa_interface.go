@@ -6,6 +6,7 @@ import (
 
 type Reader interface {
 	Get(id int32) (*entity.Mkoa, error)
+	GetByCode(code string) (*entity.Mkoa, error)
 	List(filter *entity.MkoaFilter) ([]*entity.Mkoa, int32, error)
 }
 
