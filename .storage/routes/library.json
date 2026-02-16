@@ -1,23 +1,18 @@
 [
   {
     "method": "POST",
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
     "path": "/library/api/v1/role/show",
     "name": "library/webserver/controllers.GetRole"
   },
   {
     "method": "POST",
-    "path": "/library/api/v1/role/create",
-    "name": "library/webserver/controllers.CreateRole"
-  },
-  {
-    "method": "POST",
     "path": "/library/api/v1/role/update",
     "name": "library/webserver/controllers.UpdateRole"
-  },
-  {
-    "method": "POST",
-    "path": "/library/api/v1/role/delete",
-    "name": "library/webserver/controllers.SoftDeleteRole"
   },
   {
     "method": "POST",
@@ -30,8 +25,28 @@
     "name": "library/webserver/controllers.CreateStaff"
   },
   {
+    "method": "GET",
+    "path": "/library/api/v1/staff/show/:id",
+    "name": "library/webserver/controllers.GetStaff"
+  },
+  {
     "method": "POST",
-    "path": "/library/api/v1/role/list",
-    "name": "library/webserver/controllers.ListRole"
+    "path": "/library/api/v1/role/create",
+    "name": "library/webserver/controllers.CreateRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/delete",
+    "name": "library/webserver/controllers.SoftDeleteRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/staff/update/:id",
+    "name": "library/webserver/controllers.UpdateStaff"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/staff/delete/:id",
+    "name": "library/webserver/controllers.DestroyStaff"
   }
 ]

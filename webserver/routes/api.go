@@ -30,4 +30,12 @@ func ApiRouters(app *echo.Echo) {
 		role.POST("/destroy", controllers.DestroyRole)
 	}
 
+	staff := api.Group("/staff")
+	{
+		staff.POST("/create", controllers.CreateStaff) //entry point
+		staff.POST("/update/:id", controllers.UpdateStaff)
+		staff.POST("/delete/:id", controllers.DestroyStaff)
+		staff.GET("/show/:id", controllers.GetStaff)
+	}
+
 }
