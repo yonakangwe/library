@@ -33,7 +33,7 @@ func NewMember() *MemberConn {
 
 var memberTableName string = "members"
 
-func getRoleQuery() string {
+func getMemberQuery() string {
 	return `SELECT 
 					 id,
 					 fullName, 

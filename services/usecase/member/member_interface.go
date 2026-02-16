@@ -5,7 +5,7 @@ import (
 )
 
 type Reader interface {
-	Get(id int32) (*entity.Member, error)
+	//Get(id int32) (*entity.Member, error)
 	// List(filter *entity.RoleFilter) ([]*entity.Role, int32, error)
 }
 
@@ -22,7 +22,7 @@ type Repository interface {
 }
 
 type UseCase interface {
-	Create(fullName string, phone string, email string, membershipNo string, createdBy int32) (int32, error)
+	Create(fullName string, phone string, email string, membershipNo int32, createdBy int32) (int32, error)
 	// List(filter *entity.RoleFilter) ([]*entity.Role, int32, error)
 	Get(id int32) (*entity.Member, error)
 	Update(e *entity.Member) (int32, error)

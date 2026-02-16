@@ -7,26 +7,22 @@ import (
 )
 
 type Member struct {
-	ID           int32
-	FullName     string
-	Phone        string
-	Email        string
-	MembershipNo int32
-	CreatedBy    int32
-	CreatedAt    time.Time
-	UpdatedBy    int32
-	UpdatedAt    time.Time
-	DeletedBy    int32
-	DeletedAt    time.Time
+	ID        int32
+	FullName  string
+	Email     string
+	CreatedBy int32
+	CreatedAt time.Time
+	UpdatedBy int32
+	UpdatedAt time.Time
+	DeletedBy int32
+	DeletedAt time.Time
 }
 
-func NewMember(fullName, phone, email string, membershipNo, createdBy int32) (*Member, error) {
+func NewMember(fullName, email string, createdBy int32) (*Member, error) {
 	member := &Member{
-		FullName:     fullName,
-		Phone:        phone,
-		Email:        email,
-		MembershipNo: membershipNo,
-		CreatedBy:    createdBy,
+		FullName:  fullName,
+		Email:     email,
+		CreatedBy: createdBy,
 	}
 
 	err := member.ValidateCreate()
@@ -41,17 +37,35 @@ func (m *Member) ValidateCreate() error {
 	if m.FullName == "" {
 		return errors.New("error validating Members entity, FullName field required")
 	}
-	if m.Phone == "" {
-		return errors.New("error validating Members entity, Phone field required")
-	}
 	if m.Email == "" {
 		return errors.New("error validating Members entity, Email field required")
-	}
-	if m.MembershipNo <= 0 {
-		return errors.New("error validating Members entity, MembershipNo field required")
 	}
 	if m.CreatedBy <= 0 {
 		return errors.New("error validating Members entity, CreatedBy field required")
 	}
 	return nil
+}
+
+func (r *Member) ValidateUpdate() error {
+	if r.ID <= 0 {
+		return errors.New("error validating Member entity, ID field required")
+	}
+	if r.FullName == "" {
+		return errors.New("error validating Member entity, fullname field required")
+	}
+	if r.Email == "" {
+		return errors.New("error validating Member entity, email field required")
+	}
+	if r.UpdatedBy <= 0 {
+		return errors.New("error validating Member entity, updated_by field required")
+	}
+	return nil
+}
+
+type MemberFilter struct {
+	Page      int32
+	PageSize  int32
+	SortBy    string
+	SortOrder string
+	FullName  string
 }
