@@ -67,6 +67,9 @@
           <button type="button" id="refreshBtn" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300 transition">
             Refresh
           </button>
+          <button type="button" id="exportPdfBtn" class="px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
+            Export PDF
+          </button>
         </div>
         <p class="text-sm text-slate-500" id="meta"></p>
       </div>
@@ -206,6 +209,16 @@
       }
     }
 
+    async function exportMkoaPdf() {
+      clearError();
+      try {
+        // Trigger file download in a new tab/window.
+        window.open(API_BASE + '/mkoa/report', '_blank');
+      } catch (e) {
+        showError('Failed to start PDF export: ' + e.message);
+      }
+    }
+
     async function viewMkoa(row) {
       await Swal.fire({
         title: row.name || '(no name)',
@@ -313,6 +326,7 @@
     }
 
     document.getElementById('refreshBtn').addEventListener('click', loadList);
+    document.getElementById('exportPdfBtn').addEventListener('click', exportMkoaPdf);
 
     document.getElementById('createForm').addEventListener('submit', async function (e) {
       e.preventDefault();

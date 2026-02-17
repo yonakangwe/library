@@ -20,6 +20,7 @@ func MkoaRoutes(api *echo.Group) {
 		mkoa.POST("/update", controllers.UpdateMkoa)
 		mkoa.POST("/delete", controllers.SoftDeleteMkoa)
 		mkoa.POST("/destroy", controllers.DestroyMkoa)
+		mkoa.GET("/report", controllers.ExportMkoaReport)
 	}
 }
 
@@ -31,7 +32,6 @@ func MkoaRoutes(api *echo.Group) {
 | the path "webserver/public/mkoa/index.html" resolves correctly.
 */
 func MkoaPage(app *echo.Echo) {
-	app.GET("/", func(c echo.Context) error { return c.Redirect(302, "/mkoa") })
 	app.Static("/css", "webserver/public/css")
 	app.File("/mkoa", "webserver/public/mkoa/index.html")
 }

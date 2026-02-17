@@ -1,8 +1,63 @@
 [
   {
     "method": "POST",
+    "path": "/library/api/v1/role/list",
+    "name": "library/webserver/controllers.ListRole"
+  },
+  {
+    "method": "POST",
     "path": "/library/api/v1/role/show",
     "name": "library/webserver/controllers.GetRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/country/list",
+    "name": "library/webserver/controllers.ListCountry"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/country/update",
+    "name": "library/webserver/controllers.UpdateCountry"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/list",
+    "name": "library/webserver/controllers.ListMkoa"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/show",
+    "name": "library/webserver/controllers.GetMkoa"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/update",
+    "name": "library/webserver/controllers.UpdateMkoa"
+  },
+  {
+    "method": "GET",
+    "path": "/css*",
+    "name": "github.com/labstack/echo/v4.(*Echo).Static.StaticDirectoryHandler.func1"
+  },
+  {
+    "method": "GET",
+    "path": "/",
+    "name": "library/webserver/routes.ApiRouters.func1"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/role/destroy",
+    "name": "library/webserver/controllers.DestroyRole"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/country/destroy",
+    "name": "library/webserver/controllers.DestroyCountry"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/delete",
+    "name": "library/webserver/controllers.SoftDeleteMkoa"
   },
   {
     "method": "POST",
@@ -16,22 +71,42 @@
   },
   {
     "method": "POST",
+    "path": "/library/api/v1/country/delete",
+    "name": "library/webserver/controllers.SoftDeleteCountry"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/create",
+    "name": "library/webserver/controllers.CreateMkoa"
+  },
+  {
+    "method": "POST",
+    "path": "/library/api/v1/mkoa/destroy",
+    "name": "library/webserver/controllers.DestroyMkoa"
+  },
+  {
+    "method": "POST",
     "path": "/library/api/v1/role/delete",
     "name": "library/webserver/controllers.SoftDeleteRole"
   },
   {
     "method": "POST",
-    "path": "/library/api/v1/role/destroy",
-    "name": "library/webserver/controllers.DestroyRole"
+    "path": "/library/api/v1/country/show",
+    "name": "library/webserver/controllers.GetCountry"
   },
   {
     "method": "POST",
-    "path": "/library/api/v1/member/create",
-    "name": "library/webserver/controllers.CreateMember"
+    "path": "/library/api/v1/country/create",
+    "name": "library/webserver/controllers.CreateCountry"
   },
   {
-    "method": "POST",
-    "path": "/library/api/v1/role/list",
-    "name": "library/webserver/controllers.ListRole"
+    "method": "GET",
+    "path": "/library/api/v1/mkoa/report",
+    "name": "library/webserver/controllers.ExportMkoaReport"
+  },
+  {
+    "method": "GET",
+    "path": "/mkoa",
+    "name": "library/webserver/routes.MkoaPage.(*Echo).File.common.file.func1"
   }
 ]

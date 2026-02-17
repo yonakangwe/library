@@ -1,12 +1,42 @@
 package routes
 
 import (
+	"net/http"
+
 	"library/webserver/controllers"
 
 	"github.com/labstack/echo/v4"
 )
 
 func ApiRouters(app *echo.Echo) {
+
+	// Root status endpoint
+	app.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  "ok",
+			"message": "Library API Server is running",
+			"version": "v1",
+			"baseUrl": "http://127.0.0.1:4602/library/api/v1",
+			"endpoints": map[string][]string{
+				"role": {
+					"/role/list",
+					"/role/show",
+					"/role/create",
+					"/role/update",
+					"/role/delete",
+					"/role/destroy",
+				},
+				"country": {
+					"/country/list",
+					"/country/show",
+					"/country/create",
+					"/country/update",
+					"/country/delete",
+					"/country/destroy",
+				},
+			},
+		})
+	})
 
 	/*
 		|--------------------------------------------------------------------------
@@ -30,10 +60,10 @@ func ApiRouters(app *echo.Echo) {
 		role.POST("/destroy", controllers.DestroyRole)
 	}
 
-	member := api.Group("/member")
+	/*member := api.Group("/member")
 	{
 		member.POST("/create", controllers.CreateMember)
-	}
+	}*/
 
 	/*
 		|--------------------------------------------------------------------------
@@ -49,5 +79,13 @@ func ApiRouters(app *echo.Echo) {
 		countryRoute.POST("/delete", controllers.SoftDeleteCountry)
 		countryRoute.POST("/destroy", controllers.DestroyCountry)
 	}
+
+	/*
+		|--------------------------------------------------------------------------
+		| DONE - mkoa
+		|--------------------------------------------------------------------------
+	*/
+	MkoaRoutes(api)
+	MkoaPage(app)
 
 }

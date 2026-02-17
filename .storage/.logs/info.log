@@ -28,3 +28,43 @@
 {"L":"INFO","T":"2026-02-16T13:43:50+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
 {"L":"INFO","T":"2026-02-16T13:47:52+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
 {"L":"INFO","T":"2026-02-16T13:49:13+03:00","C":"/Users/nakhaju/Desktop/yohana/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:13:07+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:14:13+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:18:51+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:20:22+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:35:09+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:40:19+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T11:56:11+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T12:11:15+03:00","C":"D:/go projects/library/app.go:42","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T15:07:34+03:00","C":"D:/go projects/library/app.go:48","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T15:48:44+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:08:53+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:13:31+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:18:42+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:37:27+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:37:51+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 384.7106ms"}
+{"L":"INFO","T":"2026-02-17T16:37:52+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 376.7692ms"}
+{"L":"INFO","T":"2026-02-17T16:37:58+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 345.6025ms"}
+{"L":"INFO","T":"2026-02-17T16:38:28+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 147.1609ms"}
+{"L":"INFO","T":"2026-02-17T16:40:22+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:40:40+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 357.7554ms"}
+{"L":"INFO","T":"2026-02-17T16:40:42+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 301.9877ms"}
+{"L":"INFO","T":"2026-02-17T16:40:47+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 459.3002ms"}
+{"L":"INFO","T":"2026-02-17T16:40:52+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 406.3523ms"}
+{"L":"INFO","T":"2026-02-17T16:40:53+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 303.1424ms"}
+{"L":"INFO","T":"2026-02-17T16:40:55+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 394.1252ms"}
+{"L":"INFO","T":"2026-02-17T16:41:01+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 188.0628ms"}
+{"L":"INFO","T":"2026-02-17T16:41:17+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 276.3798ms"}
+{"L":"INFO","T":"2026-02-17T16:41:31+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 157.0746ms"}
+{"L":"INFO","T":"2026-02-17T16:42:18+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 164.1865ms"}
+{"L":"INFO","T":"2026-02-17T16:42:31+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 243.5404ms"}
+{"L":"INFO","T":"2026-02-17T16:45:46+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 138.6138ms"}
+{"L":"INFO","T":"2026-02-17T16:46:25+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:46:34+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 399.4466ms"}
+{"L":"INFO","T":"2026-02-17T16:47:18+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 568.4819ms"}
+{"L":"INFO","T":"2026-02-17T16:53:27+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T16:53:44+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 2.1395035s"}
+{"L":"INFO","T":"2026-02-17T16:54:13+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 465.4516ms"}
+{"L":"INFO","T":"2026-02-17T16:56:56+03:00","C":"D:/go projects/library/package/report/general_report.go:70","M":"PDF Report generated in %v\n 206.1201ms"}
+{"L":"INFO","T":"2026-02-17T17:04:44+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}
+{"L":"INFO","T":"2026-02-17T17:05:03+03:00","C":"D:/go projects/library/app.go:46","M":"auth webserver is shutting down .... 👋 !"}

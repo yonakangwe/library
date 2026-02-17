@@ -5,11 +5,13 @@ import (
 	"library/package/log"
 	"library/package/models"
 	"library/package/pagination"
+	"library/package/report"
 	"library/package/util"
 	"library/package/validator"
 	"library/package/wrappers"
 	"library/services/entity"
 	"library/services/usecase/mkoa"
+	"strconv"
 	"time"
 
 	"net/http"
@@ -272,4 +274,58 @@ func DestroyMkoa(c echo.Context) error {
 		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
 	}
 	return wrappers.MessageResponse(c, http.StatusAccepted, "record deleted successfully")
+}
+
+// ExportMkoaReport generates a simple PDF report of all mkoa records and returns it as a download.
+func ExportMkoaReport(c echo.Context) error {
+	// Use a large page size to fetch all items (only non-deleted).
+	filter := &entity.MkoaFilter{
+		Page:      1,
+		PageSize:  1000,
+		SortBy:    "name",
+		SortOrder: "ASC",
+	}
+
+	service := mkoa.NewService()
+	data, _, err := service.List(filter)
+	if util.IsError(err) {
+		if errors.Is(err, mkoa.ErrDBUnavailable) {
+			return wrappers.ErrorResponse(c, http.StatusServiceUnavailable, mkoaDBUnavailableMsg)
+		}
+		log.Errorf("error listing mkoa for pdf report: %v", err)
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
+	}
+
+	// Build table data: first row is header.
+	reportData := make([][]string, 0, len(data)+1)
+	reportData = append(reportData, []string{"#", "Name", "Code", "Status", "Created at"})
+
+	for i, d := range data {
+		createdAt := d.CreatedAt.Format("2006-01-02 15:04")
+		reportData = append(reportData, []string{
+			strconv.Itoa(i + 1),
+			d.Name,
+			d.Code,
+			d.Status,
+			createdAt,
+		})
+	}
+
+	// Reasonable column widths (percentages, will be normalised by report package).
+	columnWidth := []float64{8, 34, 18, 15, 25}
+
+	path := report.GeneralReport(
+		"SQA System",
+		"Mikoa (Regions)",
+		reportData,
+		columnWidth,
+		"mikoa_regions",
+		9,
+		false,
+	)
+	if path == "" {
+		return wrappers.ErrorResponse(c, http.StatusInternalServerError, mkoaInternalServerErrorMsg)
+	}
+
+	return c.Attachment(path, "mikoa_regions.pdf")
 }

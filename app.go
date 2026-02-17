@@ -24,14 +24,18 @@ func main() {
 
 	database.Connect()
 	defer database.Close()
-	go webserver.StartWebserver()
+
+	// If RUN_MKOA_ONLY=1 is set, start only the mkoa server
+	if os.Getenv("RUN_MKOA_ONLY") == "1" {
+		go webserver.StartMkoaServer()
+	} else {
+		go webserver.StartWebserver()
+	}
 
 	defer os.Exit(0)
 
 	stop := make(chan os.Signal, 1)
 
-
-	
 	signal.Notify(
 		stop,
 		syscall.SIGHUP,

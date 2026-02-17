@@ -62,10 +62,10 @@ func reportHeader(pdf *gopdf.GoPdf, mainTitle, title, qrs, doi string) {
 
 	titleWidth := availablePageWidth - logoSize - qrSize
 
-	x, y := addMultiLineBlock(pdf, xp, yp, titleWidth, 30, "MAIN HEADING", true)
+	x, y := addMultiLineBlock(pdf, xp, yp, titleWidth, 30, "THE UNITED REPUBLIC OF TANZANIA", true)
 
 	pdf.SetTextColor(0, 122, 204)
-	x, y = addMultiLineBlock(pdf, x, y, titleWidth, 30, "SUBHEADING", true)
+	x, y = addMultiLineBlock(pdf, x, y, titleWidth, 30, "MINISTRY OF EDUCATION, SCIENCE AND TECHNOLOGY", true)
 
 	pdf.SetTextColor(0, 0, 0)
 	x, y = addMultiLineBlock(pdf, x+10, y, titleWidth, 15.0, strings.ToUpper(mainTitle), true)
